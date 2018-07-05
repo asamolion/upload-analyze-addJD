@@ -29,6 +29,8 @@ class InputField extends Component {
       <div style={{ position: "relative" }}>
         <label style={labelStyle}>{this.props.labelText}</label>
         <TextField
+          name={this.props.name}
+          onChange={this.props.onChangeValue}
           fullWidth={true}
           className="text-field"
           inputStyle={inputStyle}

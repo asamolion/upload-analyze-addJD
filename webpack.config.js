@@ -20,10 +20,10 @@ module.exports = {
                     presets: ['react', 'es2015', 'stage-3',]
                 }
             },
-            {
-              test: /\.(gif|svg|jpg|png|)$/,
-              loader: "file-loader",
-            },
+            // {
+            //   test: /\.(gif|svg|jpg|png|)$/,
+            //   loader: "file-loader",
+            // },
             {
                 test: /\.css$/,
                 use: [
@@ -31,10 +31,10 @@ module.exports = {
                   { loader: "css-loader" }
                 ]
             },
-          //   {
-          //     test: /\.(jpe?g|png|gif|woff|css|js|woff2|eot|ttf|svg|css|js|php)(\?[a-z0-9=.]+)?$/,
-          //     loader: 'url-loader?limit=100000' ,
-          // }
+            {
+              test: /\.(jpe?g|png|gif|woff|woff2|eot|ttf|svg|php)(\?[a-z0-9=.]+)?$/,
+              loader: 'url-loader?limit=100000' ,
+          }
           
 
         ]
@@ -46,6 +46,6 @@ module.exports = {
     })],
     devServer: {
         historyApiFallback: true,
-       open:true,
+       
     }
 }

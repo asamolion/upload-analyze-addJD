@@ -33,40 +33,71 @@ class AttributeContainer extends Component {
       
 
         this.state = {
-             inputs: [0],
+              inputs: this.props.formData  ? this.props.formData : [{}],
+              refs: [this.props.formData  ? this.props.formData.length : 0],
         };
         this.addAttribute = this.addAttribute.bind(this);
         this.removeAttribute = this.removeAttribute.bind(this);
+        this.returnInfo = this.returnInfo.bind(this);
 
     }
+
+    componentDidMount(){
+    this.props.onRef(this);
+  }
 
 
   addAttribute(evt){
-    evt.preventDefault();
-    this.setState({
-      inputs: [...this.state.inputs, this.state.inputs.length]
+    
+
+
+     this.setState({
+      inputs: [...this.state.inputs, this.state.inputs.length],
+       refs: [...this.state.refs, this.state.refs.length],
     });
+
+
   };
 
   removeAttribute()  {
+   
     let inputs = [...this.state.inputs];
+    let refs = [...this.state.refs];
     inputs.pop();
+    refs.pop();
 
     if (inputs.length > 0) {
+      console.log("checking inputs length", inputs.length);
       this.setState({
-        inputs
+        inputs, refs
       });
     }
+
   };
+
+  returnInfo(){
+    this.state.refs.map((item, index) => {
+
+         
+         let inputs = this.state.inputs;
+         inputs[index] = item.returnInfo();
+         
+         this.setState({inputs});
+          });
+    
+    return this.state.inputs;
+  }
 
   render() {
     return (
       <div style={rowStyles} className="row">
         <div style={{ marginLeft: "0" }} className="col-md-8">
-          {this.state.inputs.map(value => (
+          {this.state.inputs.map((item, index) => (
             <AttributeInput
-              key={value}
-              number={value}
+            key={item}
+            onRef={ref => (this.state.refs[index] = ref)}
+              data={item}
+              number={index}
               labels={this.props.labels}
               closeHandler={this.removeAttribute}
             />

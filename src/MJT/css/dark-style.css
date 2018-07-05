@@ -1263,7 +1263,7 @@ opacity: 0;
 
 /* Services */
 .center-of-page{
-	margin-top:10%;
+	
 }
 #video-background-load{
 	
@@ -1277,8 +1277,10 @@ opacity: 0;
 }
 #video{
 		width:100%;
+		background: rgba(242,242,242,57) no-repeat center center ;
 		
 		overflow: hidden;
+
 		/*background: url('../images/backgrounds/city-atoms3.png') center top no-repeat;*/
 		
 

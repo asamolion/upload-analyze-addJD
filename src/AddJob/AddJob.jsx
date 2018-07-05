@@ -2,7 +2,7 @@ import React,{Component} from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-
+import axios from 'axios';
 import { grey500 } from "material-ui/styles/colors";
 // Custom Components
 import Header from "./components/Header";
@@ -17,7 +17,9 @@ import Expectation from "./components/Expectation";
 import AttributeContainer from "./components/Attributes/AttributeContainer";
 import Checkbox from "material-ui/Checkbox";
 import MenuItem from "material-ui/MenuItem";
-
+import { TextValidator, ValidatorForm, SelectValidator} from 'react-material-ui-form-validator';
+import RaisedButton from 'material-ui/RaisedButton';
+import { BounceLoader } from 'react-spinners';
 
 const checkBoxStyles = {
   margin: "5px 20px",
@@ -33,7 +35,13 @@ import { deepOrange500 } from "material-ui/styles/colors";
 import getMuiTheme from "material-ui/styles/getMuiTheme";
 import MuiThemeProvider from "material-ui/styles/MuiThemeProvider";
 
+import Paper from 'material-ui/Paper';
+import { history } from '../_helpers';
+import Background from '../_constants/images/analyze.png';
+
 // Font
+
+
 
 const colStyle = {
   boxSizing: "border-box",
@@ -50,6 +58,25 @@ const col2Style = {
   width:"71%",
 };
 
+const styles = {
+paperStyle: {
+    marginLeft:"10%",
+     position: 'relative',
+     marginTop:"10%",
+     zIndex: "10",
+     
+      display: 'inline-block',
+      backgroundColor: 'white',
+      
+       borderStyle: "solid",
+    
+      borderColor: "white",
+      borderWidth: "2px",
+      
+ },
+};
+
+
 // Theme
 const muiTheme = getMuiTheme({
   palette: {
@@ -58,56 +85,187 @@ const muiTheme = getMuiTheme({
 });
 
 class AddJob extends React.Component {
+
+    constructor(props) {
+
+        console.log("checking props",props);
+    super(props);
+    
+
+    this.state = {
+      
+      submitButtonDisabled: false,
+      loading:false,
+
+    }
+
+    console.log("checking Formmingngng",this.state.formData);
+
+  
+    this.handleSubmit = this.handleSubmit.bind(this);
+   
+    this.convertToArray = this.convertToArray.bind(this);
+    this.handleFormErrors = this.handleFormErrors.bind(this);
+    this.makePost = this.makePost.bind(this);
+    this.goBack = this.goBack.bind(this);
+
+  }
+
+    convertToArray(langs){
+    var newLangs = [];
+
+    langs.map((item, index) => {
+
+        
+
+         newLangs.push(item.Name);
+          });
+
+    return newLangs;
+  }
+
+ makePost(obj){
+
+       axios.post('/submitJD', obj)
+      .then(res => {
+        
+        console.log("checking result from submit JD response", res.data);
+         this.setState({loading: false, submitButtonDisabled:false});
+         history.push('/submit');
+         
+      
+
+        
+       
+      })
+ }
+
+  handleSubmit(){
+
+    var obj = {};
+    this.setState({loading: true, submitButtonDisabled:true});
+
+
+    var skills = this.convertToArray(this.SkillsContainer.returnInfo());
+    var info = this.InfoContainer.returnInfo();
+    var langs = this.convertToArray(this.LanguagesContainer.returnInfo());
+    var checks = this.CheckBoxesContainer.returnInfo();
+
+
+    console.log("pre flat check", skills, info, langs, checks);
+
+    // info.map((item, index) => {
+    //      obj.push(item);
+    // });
+
+    // checks.map((item, index) => {
+    //      obj.push(item);
+    // });
+
+    for(var key in info) {
+    obj[key] = info[key]
+}
+for(var key in checks) {
+    obj[key] = checks[key]
+}
+    obj["Language"] = JSON.stringify(langs);
+    obj["RequiredSkills"] = JSON.stringify(skills);
+
+  this.makePost(obj);
+
+
+
+
+
+
+
+
+    
+  }
+
+  goBack(event){
+    event.preventDefault();
+
+    history.push('/');
+  }
+
+
+handleFormErrors(errors){
+  console.log("there were errors in the form ",errors);
+}
+
+
+
   render() {
 
     console.log("about to render ");
     return (
-     <div style={{ maxHeight: "1200px",  overflowY: "scroll",}}>
+     <div style={{ }}>
       <MuiThemeProvider muiTheme={muiTheme}>
-        <div style={{maxWidth: "1100px", maxHeight: "1200px",  overflowY: "scroll",}}>
-           <div class="row">
+      <ValidatorForm
+                ref="form"
+                onSubmit={this.handleSubmit}
+                onError={errors => this.handleFormErrors(errors)}>
+       <Section style={{marginBottom:"5%",marginTop:"2.5%",marginLeft:"10%",}} containerSize={"85%"}>
+
+             <a> <h4 onClick={this.goBack} style={{color:"#38ACB7"}}> &larr; Job Description </h4>  </a>
+          </Section>
+        <Section containerSize={"85%"} style={{background: "url(" + Background + ") no-repeat", marginTop:"-5px",marginBottom:"5%" }} >
+           
+           <Paper style={styles.paperStyle} zDepth={5}> 
+          
             
-            <div style={colStyle} className="col-md-1">
-             <div style={{ width: "100%" }}>
-                <div style={{ "border": "1px solid orange","marginLeft":"20px","marginTop":"10px", "borderRadius": "500px", "width": "100px", "color": "orange", "padding": "30px 10px 10px 10px","lineHeight": "15px", "fontWeight": "bold", "height": "100px", "display": "flex", "alignitems": "center", "textAlign": "center" }}>
-                  Upload Logo
-              </div>
-              </div>
-            </div>
+            
              
-             <div style={col2Style} className="col-md-8">
-
+            
+         
             
 
              
-              <Section heading="">
+              <Section style={{marginLeft:"5%"}} containerSize={"85%"} heading="">
 
-                <Info />
+                <Info onRef={ref => (this.InfoContainer = ref)} />
               </Section>
-              
-              <Section heading="Required Skills">
-                <RatedInputContainer defaultValues={["Python", "Java"]} />
-              </Section>
-              <Section heading="Language">
-                <RatedInputContainer defaultValues={["English", "Spanish"]} />
-              </Section>
-              <Section heading="Compensation">
-                <CheckBoxes/>
-              </Section>
-              
-            </div>
 
-            <div style={colStyle} className="col-md-1">
-             <div style={{ width: "100%" }}>
-                <div style={{ "display": "none","marginLeft":"20px","marginTop":"10px", "borderRadius": "500px", "width": "100px", "color": "orange", "padding": "30px 10px 10px 10px","lineHeight": "15px", "fontWeight": "bold", "height": "100px", "display": "flex", "alignitems": "center", "textAlign": "center" }}>
+              
+              <Section containerSize={"80%"} heading="Required Skills">
+
+                <RatedInputContainer onRef={ref => (this.SkillsContainer = ref)} dataType="Skills" formData={[]} defaultValues={["Python", "Java"]} />
+              </Section>
+              <Section containerSize={"80%"} heading="Required Languages">
+                <RatedInputContainer  onRef={ref => (this.LanguagesContainer = ref)} dataType="Languages" formData={[]} defaultValues={["English", "Spanish"]} />
+              </Section>
+              <Section containerSize={"80%"} heading="Compensation">
+                <CheckBoxes onRef={ref => (this.CheckBoxesContainer = ref)}/>
+              </Section>
+
+              <Section style={{marginBottom:"5%",marginTop:"5%",marginLeft: "25%",}}>
+                <div className="col-md-1 col-md-offset-2" >
+                <div style={{ position:"fixed",
+                  top: "90%",
+                  left: "45%"}} >
+                                    <BounceLoader
+                                    color={'#F5A623'} 
+                                    loading={this.state.loading}
+                                    size={120} />
+                                      </div>
+                    
+                        <RaisedButton  disabled={this.state.submitButtonDisabled} label="Submit" type="submit"  Rounded={true} style={{borderRadius: "5px", }} primary={true}  />
+                       
                   
-              </div>
-              </div>
-            </div>
+                </div>
+            </Section>
+              
+           
+          
+           
+         
 
+        
+         </Paper>
+        </Section>
 
-         </div>
-        </div>
+        </ValidatorForm>
       </MuiThemeProvider>
       </div>
       

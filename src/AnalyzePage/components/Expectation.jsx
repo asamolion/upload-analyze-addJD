@@ -24,6 +24,10 @@ function getSalary(start,end){
 var string = '';
       switch(start + end){
 
+        case 0:
+        string = undefined;
+        break;
+
       case 50000:
         string = "$0 - $50,000+";
         break;
@@ -49,6 +53,82 @@ var string = '';
     return string;
 }
 
+function getSalaryStart(string){
+ if(!string){
+    console.log("there was no salary start or end");
+    return undefined;
+  }
+var num = 0;
+      switch(string){
+
+        case undefined:
+        num = 0;
+        break;
+
+      case "$0 - $50,000+":
+        num = 0;
+        break;
+       
+      case "$50,000 - $100,000":
+        num = 50000;
+        break;
+        
+      case "$100,000 - $250,000":
+        num = 100000;
+        break;
+        
+      case "$250k+":
+        num = 250000;
+        break;
+         
+
+
+
+
+    }
+
+    return num;
+
+}
+
+function getSalaryEnd(string){
+  if(!string){
+    console.log("there was no salary start or end");
+    return undefined;
+  }
+var num = 0;
+      switch(string){
+
+        case undefined:
+        num = 0;
+        break;
+
+      case "$0 - $50,000+":
+        num = 50000;
+        break;
+       
+      case "$50,000 - $100,000":
+        num = 100000;
+        break;
+        
+      case "$100,000 - $250,000":
+        num = 250000;
+        break;
+        
+      case "$250k+":
+        num = 250000;
+        break;
+         
+
+
+
+
+    }
+
+    return num;
+
+}
+
 class Expecation extends Component {
 
 
@@ -60,8 +140,53 @@ class Expecation extends Component {
 
         this.state = {
               dataSource: [],
+              formData: this.props.formData,
         };
         this.autoCompleteUpdateHandler = this.autoCompleteUpdateHandler.bind(this);
+        this.handleInfoChange = this.handleInfoChange.bind(this);
+        this.handleCheckChange = this.handleCheckChange.bind(this);
+    }
+
+     componentDidMount(){
+    this.props.onRef(this);
+  }
+
+  handleInfoChange(event) {
+        const { formData } = this.state;
+ 
+  formData[event.target.name] = event.target.value;
+
+    
+        console.log("checking handleInfoChange", event.target);
+        console.log("checking new formData in HandleInfoChange ", formData); 
+        this.setState({ formData });
+
+    }
+
+    handleCheckChange(event){
+      console.log("checking handleInfoChange checbkbox", event.target.value);
+
+      const { formData } = this.state;
+
+
+          formData[event.target.name] = !formData[event.target.name];
+        
+        this.setState({formData});
+    }
+
+  
+
+    returnInfo(){
+      var obj = {
+        "SalaryStart": getSalaryStart(this.SalaryRange.returnInfo()),
+        "SalaryEnd" : getSalaryEnd(this.SalaryRange.returnInfo()),
+        "PreferredLocation" : this.PrefLoc.returnInfo(),
+        "Relocation": this.state.formData.Relocation,
+        "Travel" : this.state.formData.Travel,
+        "VisaStatus" : this.VisaStat.returnInfo(),
+      };
+
+      return obj;
     }
 
   autoCompleteUpdateHandler(value) {
@@ -71,12 +196,12 @@ class Expecation extends Component {
     });
   }
   render() {
-    const formData = this.props.formData;
+    const formData = this.state.formData;
     return (
       <div className="row">
-        <div className="col-md-10">
+        <div className="col-md-12">
           <div className="col-md-8">
-            <Dropdown startValue={getSalary(formData.Preference.SalaryStart,formData.Preference.SalaryEnd)}>
+            <Dropdown onRef={ref => (this.SalaryRange = ref)} handleChange={this.handleInfoChange} startValue={getSalary(formData.SalaryStart,formData.SalaryEnd)}>
               <MenuItem value={undefined} primaryText="Salary Range" />
               <MenuItem value={"$0 - $50,000"} primaryText="$0 - $50,000" />
               <MenuItem value={"$50,000 - $100,000"} primaryText="$50,000 - $100,000" />
@@ -85,15 +210,17 @@ class Expecation extends Component {
             </Dropdown>
           </div>
           <div className="col-md-4">
-            <Checkbox
-            checked={formData.Preference.Relocation}
+            <Checkbox onRef={ref => (this.AcceptReloc = ref)}
+            name="Relocation"
+            onCheck={this.handleCheckChange}
+            checked={this.state.formData.Relocation}
               label="Accept Relocation"
               style={checkBoxStyles}
               labelStyle={checkboxLableStyles}
             />
           </div>
           <div className="col-md-8">
-            <Dropdown startValue={formData.Preference.PreferredLocation}>
+            <Dropdown onRef={ref => (this.PrefLoc = ref)}  startValue={formData.PreferredLocation}>
               <MenuItem value={undefined} primaryText="Preferred location" />
               <MenuItem value={"California"} primaryText="California" />
               <MenuItem value={"New York"} primaryText="New York" />
@@ -102,20 +229,22 @@ class Expecation extends Component {
             </Dropdown>
           </div>
           <div className="col-md-4">
-            <Checkbox
-              checked={formData.Preference.Travel}
+            <Checkbox onRef={ref => (this.WillTrav = ref)}
+             onCheck={this.handleCheckChange}
+              name="Travel"
+              checked={this.state.formData.Travel}
               label="Willing to Travel"
               style={checkBoxStyles}
               labelStyle={checkboxLableStyles}
             />
           </div>
           <div className="col-md-8">
-            <Dropdown>
-              <MenuItem value={undefined} primaryText="Visa Status" />
-              <MenuItem value={true} primaryText="Require sponsorship" />
+            <Dropdown onRef={ref => (this.VisaStat = ref)}  startValue={formData.VisaStatus}>
+              <MenuItem value={''} primaryText="Visa Status" />
+              <MenuItem value={"Require sponsorship"} primaryText="Require sponsorship" />
               <MenuItem
-                value={false}
-                primaryText="do NOT require sponsorship"
+                value={"Do Not require sponsorship"}
+                primaryText="Do NOT require sponsorship"
               />
             </Dropdown>
           </div>

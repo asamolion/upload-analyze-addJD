@@ -24,11 +24,15 @@ const rootStyle = {
 };
 
 const labelStyle = {
-  border: "none",
-  color: grey400,
-  position: "relative",
-  top: "-11px",
-  height: "34px"
+  color: "rgb(158, 158, 158)",
+    position: "relative",
+    top: "-12px",
+    left: "-20px",
+    fontSize: "12px",
+    height: "40px",
+        marginBottom: "5px",
+    fontWeight: "700",
+
 };
 
 const iconStyle = {
@@ -65,7 +69,16 @@ class Dropdown extends Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.returnInfo = this.returnInfo.bind(this);
     }
+
+     componentDidMount(){
+   this.props.onRef ? this.props.onRef(this) : console.log("do nothing");
+  }
+
+  returnInfo(){
+    return this.state.value;
+  }
 
   handleChange(event, index, value) {this.setState({ value })}
 

@@ -28,6 +28,77 @@ const dropdownContainerStyles = {
 };
 
 class EmploymentInput extends Component {
+
+    constructor(props) {
+
+        
+    super(props);
+
+    var data;
+
+    this.handleChange = this.handleChange.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
+    this.getDate = this.getDate.bind(this);
+
+    if(this.props.data.Employer){
+       data = {
+        Employer: this.props.data.Employer,
+        Length: this.props.data.Length,
+        Title: this.props.data.Title,
+        StartDate: this.getDate(),
+      }
+    }
+
+    else{
+      data = {
+        Employer: '',
+        Length: '',
+        Title: '',
+        StartDate: '',
+      }
+    }
+
+    this.state = {
+      formData: data,
+
+    }
+
+    
+
+
+
+  }
+
+   componentDidMount(){
+    this.props.onRef(this);
+  }
+
+  handleChange(event) {
+    const { formData } = this.state;
+
+    
+
+    formData[event.target.name] = event.target.value;
+
+    
+    
+    this.setState({ formData });
+
+    }
+
+     returnInfo(){
+      
+      return this.state.formData;
+    }
+
+    getDate(){
+
+      var ret;
+
+      this.props.data.StartDate ? ret = ((new Date(this.props.data.StartDate)).getFullYear()).toString() : ret = ((new Date()).getFullYear()).toString();
+      
+      return ret;
+    }
   render() {
     return (
       <div style={dottedContainer} className="col-12">
@@ -35,25 +106,25 @@ class EmploymentInput extends Component {
           <i
             style={iconStyle}
             className="material-icons"
-            onClick={this.props.closeHandler}
+            onClick={() => this.props.closeHandler(this.props.number)}
           >
             cancel
           </i>
         ) : null}
 
         <div className="col-6">
-          <InputField labelText="Employer" hintText={this.props.data.Employer} />
+          <InputField name="Employer" onChangeValue={this.handleChange}  labelText="Employer" hintText={this.props.data.Employer} />
         </div>
         <div className="col-6">
           
-           <InputField labelText="Duration" hintText={this.props.data.Length} />
+           <InputField name="Length"  onChangeValue={this.handleChange} labelText="Duration" hintText={this.props.data.Length} />
           
         </div>
         <div className="col-6">
-          <InputField labelText="Job Position" hintText={this.props.data.Title} />
+          <InputField name="Title"  onChangeValue={this.handleChange} labelText="Job Position" hintText={this.props.data.Title} />
         </div>
         <div className="col-6">
-          <InputField labelText="Startdate" hintText={((new Date(this.props.data.StartDate)).getFullYear()).toString()} />
+          <InputField name="StartDate" onChangeValue={this.handleChange} labelText="Startdate" hintText={this.getDate()} />
         </div>
       </div>
     );

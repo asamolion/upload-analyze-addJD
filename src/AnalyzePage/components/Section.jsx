@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 
 const containerStyle = {
-  maxWidth: "75%",
-  marginBottom: "5%",
+  maxWidth: "100%",
+  position: "relative",
+  zIndex: "100"
 };
 const containerStyle2 = {
-  maxWidth: "85%",
-  marginBottom: "5%",
+  maxWidth: "75%",
+  position: "relative",
+  zIndex: "100"
 };
 
 const headingStyle = {
@@ -16,23 +18,27 @@ const headingStyle = {
   marginBottom: "30px"
 };
 
-function getContainerStyle(size){
-  if (size){
+function getContainerStyle(size) {
+  if (size) {
     return containerStyle2;
-  }
-  else return containerStyle;
+  } else return containerStyle;
 }
 
 class Section extends Component {
   render() {
     return (
-      <section style={getContainerStyle(this.props.containerSize)} className="container">
-        {this.props.heading ? (
-          <h1 style={headingStyle}>{this.props.heading}</h1>
-        ) : null}
+      <div style={this.props.style}>
+        <section
+          style={getContainerStyle(this.props.containerSize)}
+          className="container"
+        >
+          {this.props.heading ? (
+            <h1 style={headingStyle}>{this.props.heading}</h1>
+          ) : null}
 
-        <div>{this.props.children}</div>
-      </section>
+          <div>{this.props.children}</div>
+        </section>
+      </div>
     );
   }
 }

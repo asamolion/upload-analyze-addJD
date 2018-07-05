@@ -47,7 +47,7 @@ class RatedInput extends Component {
       
 
         this.state = {
-    rating: 2,
+    rating: parseInt(this.props.number),
     ratingArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
   };
 
@@ -57,7 +57,16 @@ class RatedInput extends Component {
         this.ratingHandler = this.ratingHandler.bind(this);
         this.controlButtonOnMouseOver = this.controlButtonOnMouseOver.bind(this);
         this.controlButtonOnMouseOut = this.controlButtonOnMouseOut.bind(this);
+        this.returnInfo = this.returnInfo.bind(this);
     }
+
+componentDidMount(){
+    this.props.onRef(this);
+  }
+   returnInfo(){
+
+    return this.state.rating;
+   }
 
   addRating(evt) {
     let rating = this.state.rating + 1;
@@ -99,39 +108,12 @@ class RatedInput extends Component {
           <i
             style={closeIconStyle}
             className="material-icons"
-            onClick={() => this.props.removeHandler(this.props.name)}
+            onClick={() => this.props.removeHandler(this.props.name,this.props.index)}
           >
             close
           </i>
         </section>
-        <section style={ratingSectionStyle}>
-          {this.state.ratingArray.map(value => (
-            <RatingElement
-              key={value}
-              ratingHandler={this.ratingHandler}
-              ratingValue={value}
-              active={value <= this.state.rating ? true : false}
-            />
-          ))}
-          <i
-            style={controlButtonStyle}
-            onClick={this.addRating}
-            className="material-icons"
-            onMouseOver={this.controlButtonOnMouseOver}
-            onMouseOut={this.controlButtonOnMouseOut}
-          >
-            add
-          </i>
-          <i
-            style={controlButtonStyle}
-            onClick={this.removeRating}
-            className="material-icons"
-            onMouseOver={this.controlButtonOnMouseOver}
-            onMouseOut={this.controlButtonOnMouseOut}
-          >
-            remove
-          </i>
-        </section>
+       
       </div>
     );
   }

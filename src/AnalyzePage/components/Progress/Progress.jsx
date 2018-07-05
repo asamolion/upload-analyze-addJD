@@ -22,7 +22,7 @@ class Progress extends React.Component {
           <Indicator label="Analyze & Review" completed={this.props.analyze} />
         </div>
         <div style={colStyle} className="col-md-4">
-          <Indicator label="Submit" completed={false} />
+          <Indicator label="Submit" completed={this.props.submit ==true ? true : false} />
         </div>
       </div>
     );

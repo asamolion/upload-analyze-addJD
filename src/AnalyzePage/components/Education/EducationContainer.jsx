@@ -33,32 +33,55 @@ class EducationContainer extends Component {
       
 
         this.state = {
-              inputs: this.props.formData["Education"],
+              inputs: this.props.formData.length > 0 ? this.props.formData : [{}],
+              refs: [this.props.formData.length],
         };
         this.addEducation = this.addEducation.bind(this);
         this.removeEducation = this.removeEducation.bind(this);
+        this.returnInfo = this.returnInfo.bind(this);
 
         console.log("checking state in EducationContainer", this.props.formData["Education"]);
 
     }
 
+      componentDidMount(){
+    this.props.onRef(this);
+  }
+
   addEducation (evt){
     evt.preventDefault();
     this.setState({
-      inputs: [...this.state.inputs, this.state.inputs.length]
+      inputs: [...this.state.inputs, this.state.inputs.length],
+      refs: [...this.state.refs, this.state.refs.length],
+
     });
   }
 
-  removeEducation() {
+  removeEducation(index) {
     let inputs = [...this.state.inputs];
+    let refs = [...this.state.refs];
     inputs.pop();
+    refs.pop();
 
     if (inputs.length > 0) {
+      console.log("checking inputs length", inputs.length);
       this.setState({
-        inputs
+        inputs, refs
       });
     }
   };
+
+  returnInfo(){
+    this.state.refs.map((item, index) => {
+
+         
+         let inputs = this.state.inputs;
+         inputs[index] = item.returnInfo();
+         this.setState({inputs});
+          });
+    console.log("checking returninfo in education container before sending it back", this.state.inputs);
+    return this.state.inputs;
+  }
 
   render() {
     return (
@@ -66,6 +89,8 @@ class EducationContainer extends Component {
         <div style={{ marginLeft: "0" }} className="col-md-8">
           {this.state.inputs.map((item, index) => (
             <Education
+            key={index}
+            onRef={ref => (this.state.refs[index] = ref)}
               data={item}
               number={index}
               closeHandler={this.removeEducation}

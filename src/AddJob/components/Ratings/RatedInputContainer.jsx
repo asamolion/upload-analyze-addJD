@@ -3,63 +3,119 @@ import React, { Component } from "react";
 import { deepOrange500 } from "material-ui/styles/colors";
 import AutoComplete from "material-ui/AutoComplete";
 import RaisedButton from "material-ui/RaisedButton";
-
+import Skills from '../../output.js';
+import Languages from '../../output2.js';
+import Section from "../Section";
 import RatedInput from "./RatedInput";
 
 const col8Style = {
   marginLeft: "0"
 };
+const flattenedArraySkills = [].concat(...Skills.JSONData);  
+const flattenedArrayLanguages = [].concat(...Languages.JSONData);  
+
+
 
 class RatedInputContainer extends Component {
 
 
     constructor(props) {
-        super(props);
+      super(props);
+      
+   
+        
 
       
 
-          this.state = {
-    dataSource: [],
-    currentAddition: "",
-    inputs: this.props.defaultValues.map(value => ({
-      name: value
-    }))
-  }
+      this.state = {
+        dataSource: this.props.dataType == "Skills" ? flattenedArraySkills : flattenedArrayLanguages,
+        currentAddition: "",
+        refs: this.props.formData.length ? [this.props.formData.length] : [],
+        inputs: (this.props.formData.length > 0 ? 
 
-  this.autoCompleteUpdateHandler = this.autoCompleteUpdateHandler.bind(this);
-  this.addSkill = this.addSkill.bind(this);
-  this.removeSkillHandler = this.removeSkillHandler.bind(this);
+          this.props.formData.map(value => ({
+          Name: value["Name"],
+          Level: value["Level"]
+          })) 
+
+          : 
+
+          this.props.defaultValues.map(value => ({
+          Name: value,
+          Level: 2,
+          }))
+
+
+         ),
+       
+    };
+
+    this.autoCompleteUpdateHandler = this.autoCompleteUpdateHandler.bind(this);
+    this.addSkill = this.addSkill.bind(this);
+    this.removeSkillHandler = this.removeSkillHandler.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
 }
+
+
+
+
+
 
 
   autoCompleteUpdateHandler(value){
     this.setState({
-      dataSource: [value, value + value, value + value + value],
       currentAddition: value
     });
   }
 
+  componentDidMount(){
+    this.props.onRef(this);
+  }
+
   addSkill(name) {
     this.setState({
-      inputs: [...this.state.inputs, { name }]
+      inputs: [...this.state.inputs, { Name:name }],
+       refs: [...this.state.refs, this.state.refs.length],
+      
     });
-  };
+  }
 
-  removeSkillHandler (name){
+  removeSkillHandler (name,index){
     this.setState({
-      inputs: this.state.inputs.filter(current => current.name !== name)
+      inputs: this.state.inputs.filter(current => current.Name !== name),
+      refs: this.state.refs.filter((x,i) => i !== index),
+     
     });
-  };
+  }
+
+   returnInfo(){
+    this.state.refs.map((item, index) => {
+
+   
+
+      if (index < this.state.refs.length){
+         
+         let inputs = this.state.inputs;
+         inputs[index]["Level"] = item.returnInfo();
+         this.setState({inputs});
+       }
+          });
+    
+    return this.state.inputs;
+  }
 
   render() {
     return (
       <div>
         <div className="row">
           <div style={col8Style} className="col-md-12">
-            {this.state.inputs.map(current => (
-              <div key={current.name} className="col-md-12">
+            {this.state.inputs.map((current,index) => (
+              <div style={{marginBottom:"10px"}} key={current.name} className="col-md-6">
                 <RatedInput
-                  name={current.name}
+                  onRef={ref => (this.state.refs[index] = ref)}
+                  name={current.Name}
+                  number={current.Level ? current.Level : 2}
+                  index={index}
                   removeHandler={this.removeSkillHandler}
                 />
               </div>
@@ -67,11 +123,12 @@ class RatedInputContainer extends Component {
           </div>
         </div>
         <div className="row">
+        <Section containerSize={"90%"} >
           <AutoComplete
             name="Add"
-            style={{marginLeft: "30px"}}
             dataSource={this.state.dataSource}
             onUpdateInput={this.autoCompleteUpdateHandler}
+            maxSearchResults={10}
           />
           <RaisedButton
             label="Add"
@@ -92,6 +149,8 @@ class RatedInputContainer extends Component {
               top: "5px"
             }}
           />
+
+          </Section>
         </div>
       </div>
     );

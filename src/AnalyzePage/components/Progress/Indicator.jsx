@@ -10,16 +10,22 @@ const indicatorStyle = {
 };
 
 const iconStyle = {
-  color: deepOrange700,
+  backgroundColor: "#287784",
+  borderRadius: "50%",
+  color: "#FFF",
   display: "block",
-  padding: "5px 2px",
+  padding: 0,
   marginRight: "10px",
   fontSize: "30px"
 };
 
 const inactiveIconStyle = {
   ...iconStyle,
-  color: grey300
+  backgroundColor: "#FFF",
+  color: grey500,
+  boxShadow: "0px 0px 25px -5px rgba(0,0,0,0.75)",
+  padding: 0,
+  borderRadius: "50%"
 };
 const labelStyle = {
   color: grey500,
@@ -45,7 +51,7 @@ class Indicator extends Component {
           style={this.props.completed ? iconStyle : inactiveIconStyle}
           className="material-icons"
         >
-          check_circle
+         done 
         </i>
         <span style={labelStyle}>{this.props.label}</span>
         <i style={dottedIcon} />

@@ -57,7 +57,16 @@ class RatedInput extends Component {
         this.ratingHandler = this.ratingHandler.bind(this);
         this.controlButtonOnMouseOver = this.controlButtonOnMouseOver.bind(this);
         this.controlButtonOnMouseOut = this.controlButtonOnMouseOut.bind(this);
+        this.returnInfo = this.returnInfo.bind(this);
     }
+
+componentDidMount(){
+    this.props.onRef(this);
+  }
+   returnInfo(){
+
+    return this.state.rating;
+   }
 
   addRating(evt) {
     let rating = this.state.rating + 1;
@@ -99,7 +108,7 @@ class RatedInput extends Component {
           <i
             style={closeIconStyle}
             className="material-icons"
-            onClick={() => this.props.removeHandler(this.props.name)}
+            onClick={() => this.props.removeHandler(this.props.name,this.props.index)}
           >
             close
           </i>
