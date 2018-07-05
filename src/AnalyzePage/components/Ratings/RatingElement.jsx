@@ -6,15 +6,14 @@ const iconStyle = {
   cursor: "pointer",
   display: "inline-block",
   fontSize: "14px",
-  padding: "10px 5px",
-
+  padding: "10px 5px"
 };
 
 const RatingElement = ({ active, ratingValue, ratingHandler }) => (
   <i
     style={
       active
-        ? { ...iconStyle, color: deepOrange500 }
+        ? { ...iconStyle, color: "#72C4CC" }
         : { ...iconStyle, color: grey300 }
     }
     className="material-icons"

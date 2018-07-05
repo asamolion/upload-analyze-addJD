@@ -40,6 +40,7 @@ const styles = {
     position: "relative",
     marginTop: "10%",
     zIndex: "10",
+    width: "100%",
     display: "inline-block",
     backgroundColor: "white",
     borderStyle: "solid",
@@ -130,16 +131,19 @@ class AnalyzePage extends React.Component {
             containerSize={1}
             style={{
               background: "url(" + Background + ") no-repeat",
+              backgroundSize: "cover",
               marginBottom: "5%"
             }}
           >
             <Paper style={styles.paperStyle} zDepth={5}>
               <Section
                 containerSize={100}
-                style={{ marginTop: "15%", marginBottom: "15%" }}
-              >
-                <h2> Please confirm the following is correct </h2>
-              </Section>
+                style={{
+                  marginTop: "30px",
+                  marginBottom: "30px",
+                  color: "#72C4CC"
+                }}
+              />
               <Section containerSize={100} heading="Personal Information">
                 <Info
                   onRef={ref => (this.InfoContainer = ref)}
@@ -152,7 +156,7 @@ class AnalyzePage extends React.Component {
                   formData={this.props.data["Education"]}
                 />
               </Section>
-              <Section containerSize={100} heading="Employment/Project">
+              <Section containerSize={100} heading="Employment History">
                 <EmploymentContainer
                   onRef={ref => (this.EmploymentContainer = ref)}
                   formData={this.props.data["Employment"]}

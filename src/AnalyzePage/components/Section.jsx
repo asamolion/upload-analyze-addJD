@@ -13,8 +13,8 @@ const containerStyle2 = {
 
 const headingStyle = {
   fontSize: "20px",
-  fontWeight: "700",
-  color: "#666",
+  fontWeight: "400",
+  color: "#72C4CC",
   marginBottom: "30px"
 };
 

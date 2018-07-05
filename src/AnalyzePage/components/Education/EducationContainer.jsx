@@ -10,50 +10,46 @@ const rowStyles = {
 
 const addButtonContainer = {
   display: "flex",
-  justifyContent: "center",
+  justifyContent: "start",
   alignItems: "center",
-  position: "absolute",
-  top: "0",
-  right: "0",
+  margin: "20px 0",
   minHeight: "100%"
 };
 
 const addButtonStyles = {
   cursor: "pointer",
-  color: grey500
+  color: "#72C4CC"
 };
 
 class EducationContainer extends Component {
- 
-
   constructor(props) {
-        super(props);
+    super(props);
 
-        // reset login status
-      
+    // reset login status
 
-        this.state = {
-              inputs: this.props.formData.length > 0 ? this.props.formData : [{}],
-              refs: [this.props.formData.length],
-        };
-        this.addEducation = this.addEducation.bind(this);
-        this.removeEducation = this.removeEducation.bind(this);
-        this.returnInfo = this.returnInfo.bind(this);
+    this.state = {
+      inputs: this.props.formData.length > 0 ? this.props.formData : [{}],
+      refs: [this.props.formData.length]
+    };
+    this.addEducation = this.addEducation.bind(this);
+    this.removeEducation = this.removeEducation.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
 
-        console.log("checking state in EducationContainer", this.props.formData["Education"]);
+    console.log(
+      "checking state in EducationContainer",
+      this.props.formData["Education"]
+    );
+  }
 
-    }
-
-      componentDidMount(){
+  componentDidMount() {
     this.props.onRef(this);
   }
 
-  addEducation (evt){
+  addEducation(evt) {
     evt.preventDefault();
     this.setState({
       inputs: [...this.state.inputs, this.state.inputs.length],
-      refs: [...this.state.refs, this.state.refs.length],
-
+      refs: [...this.state.refs, this.state.refs.length]
     });
   }
 
@@ -66,43 +62,49 @@ class EducationContainer extends Component {
     if (inputs.length > 0) {
       console.log("checking inputs length", inputs.length);
       this.setState({
-        inputs, refs
+        inputs,
+        refs
       });
     }
-  };
+  }
 
-  returnInfo(){
+  returnInfo() {
     this.state.refs.map((item, index) => {
-
-         
-         let inputs = this.state.inputs;
-         inputs[index] = item.returnInfo();
-         this.setState({inputs});
-          });
-    console.log("checking returninfo in education container before sending it back", this.state.inputs);
+      let inputs = this.state.inputs;
+      inputs[index] = item.returnInfo();
+      this.setState({ inputs });
+    });
+    console.log(
+      "checking returninfo in education container before sending it back",
+      this.state.inputs
+    );
     return this.state.inputs;
   }
 
   render() {
     return (
-      <div style={rowStyles} className="row">
-        <div style={{ marginLeft: "0" }} className="col-md-8">
-          {this.state.inputs.map((item, index) => (
-            <Education
-            key={index}
-            onRef={ref => (this.state.refs[index] = ref)}
-              data={item}
-              number={index}
-              closeHandler={this.removeEducation}
-            />
-          ))}
+      <React.Fragment>
+        <div style={rowStyles} className="row">
+          <div style={{ marginLeft: "0" }} className="col-sm-12">
+            {this.state.inputs.map((item, index) => (
+              <Education
+                key={index}
+                onRef={ref => (this.state.refs[index] = ref)}
+                data={item}
+                number={index}
+                closeHandler={this.removeEducation}
+              />
+            ))}
+          </div>
         </div>
-        <div style={addButtonContainer} className="col-md-4">
-          <a style={addButtonStyles} onClick={this.addEducation}>
-            + Add Attribute
-          </a>
+        <div style={rowStyles} className="row">
+          <div style={addButtonContainer} className="col-md-4">
+            <a style={addButtonStyles} onClick={this.addEducation}>
+              + Add Education
+            </a>
+          </div>
         </div>
-      </div>
+      </React.Fragment>
     );
   }
 }

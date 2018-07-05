@@ -9,13 +9,14 @@ import {
 } from "material-ui/styles/colors";
 
 const rootStyle = {
-  borderBottom: "1px solid ",
   borderColor: grey300,
+  backgroundColor: "#F3F3F3",
+  borderRadius: "25px",
   color: grey500,
-  height: "34px",
+  height: "44px",
   width: "100%",
   position: "relative",
-  top: "5px",
+  top: "23px",
 
   "&:hover": {
     border: "1px solid",
@@ -24,15 +25,8 @@ const rootStyle = {
 };
 
 const labelStyle = {
-  color: "rgb(158, 158, 158)",
-    position: "relative",
-    top: "-12px",
-    left: "-20px",
-    fontSize: "12px",
-    height: "40px",
-        marginBottom: "5px",
-    fontWeight: "700",
-
+  top: "-5px",
+  left: "-10px",
 };
 
 const iconStyle = {
@@ -57,54 +51,52 @@ const menuItemStyle = {
 const listStyle = {};
 
 class Dropdown extends Component {
+  constructor(props) {
+    super(props);
 
-   constructor(props) {
-        super(props);
+    // reset login status
 
-        // reset login status
-      
+    this.state = {
+      value: this.props.startValue
+    };
 
-        this.state = {
-              value: this.props.startValue,
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.returnInfo = this.returnInfo.bind(this);
-    }
-
-     componentDidMount(){
-   this.props.onRef ? this.props.onRef(this) : console.log("do nothing");
+    this.handleChange = this.handleChange.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
   }
 
-  returnInfo(){
+  componentDidMount() {
+    this.props.onRef ? this.props.onRef(this) : console.log("do nothing");
+  }
+
+  returnInfo() {
     return this.state.value;
   }
 
-  handleChange(event, index, value) {this.setState({ value })}
+  handleChange(event, index, value) {
+    this.setState({ value });
+  }
 
   render() {
     console.log("checking dropdown state", this.state.value);
     return (
-      
-        <DropDownMenu
-          value={this.state.value}
-          onChange={this.handleChange}
-          autoWidth={false}
-          menuStyle={menuStyle}
-          menuItemStyle={menuItemStyle}
-          labelStyle={labelStyle}
-          iconStyle={iconStyle}
-          listStyle={listStyle}
-          underlineStyle={underlineStyle}
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          style={rootStyle}
-        >
-          {this.props.children}
-        </DropDownMenu>
-      
+      <DropDownMenu
+        value={this.state.value}
+        onChange={this.handleChange}
+        autoWidth={false}
+        menuStyle={menuStyle}
+        menuItemStyle={menuItemStyle}
+        labelStyle={labelStyle}
+        iconStyle={iconStyle}
+        listStyle={listStyle}
+        underlineStyle={underlineStyle}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "left"
+        }}
+        style={rootStyle}
+      >
+        {this.props.children}
+      </DropDownMenu>
     );
   }
 }
