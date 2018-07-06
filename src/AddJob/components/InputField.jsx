@@ -10,7 +10,7 @@ const labelStyle = {
   top: "12px",
   fontSize: "20px",
   fontWeight: "700",
-  color: "#666",
+  color: "#666"
 };
 const headingStyle = {
   fontSize: "20px",
@@ -37,7 +37,7 @@ class InputField extends Component {
       <div style={{ position: "relative" }}>
         <label style={labelStyle}>{this.props.labelText}</label>
         <TextField
-        multiLine={this.props.multiLine}
+          multiLine={this.props.multiLine}
           fullWidth={true}
           rows={this.props.rows}
           rowsMax={4}

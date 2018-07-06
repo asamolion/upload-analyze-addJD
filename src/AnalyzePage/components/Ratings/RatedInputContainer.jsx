@@ -14,6 +14,12 @@ const col8Style = {
 const flattenedArraySkills = [].concat(...Skills.JSONData);
 const flattenedArrayLanguages = [].concat(...Languages.JSONData);
 
+const toggleStyle = {
+  color: "#72C4CC",
+  cursor: "pointer",
+  margin: "10px 0 10px 30px"
+};
+
 class RatedInputContainer extends Component {
   constructor(props) {
     super(props);
@@ -34,13 +40,15 @@ class RatedInputContainer extends Component {
           : this.props.defaultValues.map(value => ({
               Name: value,
               Level: 2
-            }))
+            })),
+      showInput: false
     };
 
     this.autoCompleteUpdateHandler = this.autoCompleteUpdateHandler.bind(this);
     this.addSkill = this.addSkill.bind(this);
     this.removeSkillHandler = this.removeSkillHandler.bind(this);
     this.returnInfo = this.returnInfo.bind(this);
+    this.toggleInputShow = this.toggleInputShow.bind(this);
   }
 
   autoCompleteUpdateHandler(value) {
@@ -79,6 +87,12 @@ class RatedInputContainer extends Component {
     return inputs;
   }
 
+  toggleInputShow() {
+    this.setState(prevState => ({
+      showInput: !prevState.showInput
+    }));
+  }
+
   render() {
     return (
       <div>
@@ -98,32 +112,39 @@ class RatedInputContainer extends Component {
           </div>
         </div>
         <div className="row">
-          <AutoComplete
-            name="Add"
-            dataSource={this.state.dataSource}
-            onUpdateInput={this.autoCompleteUpdateHandler}
-            maxSearchResults={10}
-          />
-          <RaisedButton
-            label="Add"
-            backgroundColor={"#72C4CC"}
-            onClick={() => {
-              this.addSkill(this.state.currentAddition);
-            }}
-            buttonStyle={{
-              borderRadius: "25px"
-            }}
-            style={{
-              borderRadius: "25px",
-              margin: "10px",
-              maxHeight: "32px"
-            }}
-            labelStyle={{
-              position: "relative",
-              top: "5px"
-            }}
-          />
+          <p style={toggleStyle} onClick={this.toggleInputShow}>
+            + Add {this.props.dataType}
+          </p>
         </div>
+        {this.state.showInput && (
+          <div className="row" style={{ marginLeft: "20px" }}>
+            <AutoComplete
+              name="Add"
+              dataSource={this.state.dataSource}
+              onUpdateInput={this.autoCompleteUpdateHandler}
+              maxSearchResults={10}
+            />
+            <RaisedButton
+              label="Add"
+              backgroundColor={"#72C4CC"}
+              onClick={() => {
+                this.addSkill(this.state.currentAddition);
+              }}
+              buttonStyle={{
+                borderRadius: "25px"
+              }}
+              style={{
+                borderRadius: "25px",
+                margin: "10px",
+                maxHeight: "32px"
+              }}
+              labelStyle={{
+                position: "relative",
+                top: "5px"
+              }}
+            />
+          </div>
+        )}
       </div>
     );
   }

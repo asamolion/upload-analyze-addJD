@@ -131,6 +131,10 @@ const styles = {
     fontWeight: "300",
     color: "#72C4CC"
   },
+  checkboxIconStyle: {
+    color: "#287784",
+    fontSize: "30px"
+  },
   dividerRow: {
     marginTop: "15%"
   },
@@ -723,6 +727,14 @@ class HomePage extends React.Component {
                           ]}
                         />
                         <Checkbox
+                          checkedIcon={
+                            <i
+                              style={styles.checkboxIconStyle}
+                              className="material-icons"
+                            >
+                              done
+                            </i>
+                          }
                           name="relocationChecked"
                           label="Accept relocation"
                           checked={formData.relocationChecked}
@@ -810,6 +822,14 @@ class HomePage extends React.Component {
                         </SelectValidator>
 
                         <Checkbox
+                          checkedIcon={
+                            <i
+                              style={styles.checkboxIconStyle}
+                              className="material-icons"
+                            >
+                              done
+                            </i>
+                          }
                           name="travelChecked"
                           label="Willing to travel"
                           checked={formData.travelChecked}
@@ -869,7 +889,7 @@ class HomePage extends React.Component {
                   <div className="col-md-1 col-md-offset-5">
                     <MuiThemeProvider muiTheme={muiTheme}>
                       <RaisedButton
-                        className="analyze-button"
+                        className="rounded-button"
                         label="Analyze"
                         type="submit"
                         disabled={this.state.analyzeButtonDisabled}

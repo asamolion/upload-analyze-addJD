@@ -5,8 +5,9 @@ import { deepOrange500, grey300, grey500 } from "material-ui/styles/colors";
 import RatingElement from "./RatingElement";
 
 const nameSectionStyle = {
-  borderBottom: "1px solid",
-  borderColor: grey300,
+  backgroundColor: "#F3F3F3",
+  borderRadius: "25px",
+  padding: "10px 15px",
   position: "relative"
 };
 
@@ -16,11 +17,12 @@ const nameStyle = {
 };
 
 const closeIconStyle = {
-  color: grey500,
+  color: "#72C4CC",
   cursor: "pointer",
   fontSize: "16px",
   position: "absolute",
-  right: "0",
+  top: "12px",
+  right: "10px",
   textAlign: "right"
 };
 
@@ -37,36 +39,30 @@ const controlButtonStyle = {
 };
 
 class RatedInput extends Component {
+  constructor(props) {
+    super(props);
 
+    // reset login status
 
+    this.state = {
+      rating: parseInt(this.props.number),
+      ratingArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    };
 
-   constructor(props) {
-        super(props);
+    this.addRating = this.addRating.bind(this);
+    this.removeRating = this.removeRating.bind(this);
+    this.ratingHandler = this.ratingHandler.bind(this);
+    this.controlButtonOnMouseOver = this.controlButtonOnMouseOver.bind(this);
+    this.controlButtonOnMouseOut = this.controlButtonOnMouseOut.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
+  }
 
-        // reset login status
-      
-
-        this.state = {
-    rating: parseInt(this.props.number),
-    ratingArray: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  };
-
-        
-        this.addRating = this.addRating.bind(this);
-        this.removeRating = this.removeRating.bind(this);
-        this.ratingHandler = this.ratingHandler.bind(this);
-        this.controlButtonOnMouseOver = this.controlButtonOnMouseOver.bind(this);
-        this.controlButtonOnMouseOut = this.controlButtonOnMouseOut.bind(this);
-        this.returnInfo = this.returnInfo.bind(this);
-    }
-
-componentDidMount(){
+  componentDidMount() {
     this.props.onRef(this);
   }
-   returnInfo(){
-
+  returnInfo() {
     return this.state.rating;
-   }
+  }
 
   addRating(evt) {
     let rating = this.state.rating + 1;
@@ -74,31 +70,31 @@ componentDidMount(){
     this.setState({
       rating
     });
-  };
+  }
 
-  removeRating (evt) {
+  removeRating(evt) {
     let rating = this.state.rating - 1;
     if (rating < 1) rating = 1;
     this.setState({
       rating
     });
-  };
+  }
 
-  ratingHandler (rating) {
+  ratingHandler(rating) {
     this.setState({
       rating
     });
-  };
+  }
 
-  controlButtonOnMouseOver (evt) {
+  controlButtonOnMouseOver(evt) {
     evt.target.innerHTML += "_circle";
     evt.target.style.color = deepOrange500;
-  };
+  }
 
-  controlButtonOnMouseOut (evt) {
+  controlButtonOnMouseOut(evt) {
     evt.target.innerHTML = evt.target.innerHTML.split("_")[0];
     evt.target.style.color = grey500;
-  };
+  }
 
   render() {
     return (
@@ -108,12 +104,13 @@ componentDidMount(){
           <i
             style={closeIconStyle}
             className="material-icons"
-            onClick={() => this.props.removeHandler(this.props.name,this.props.index)}
+            onClick={() =>
+              this.props.removeHandler(this.props.name, this.props.index)
+            }
           >
             close
           </i>
         </section>
-       
       </div>
     );
   }

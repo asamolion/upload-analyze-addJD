@@ -59,7 +59,6 @@ class InputField extends Component {
           }}
           multiLine={this.props.multiLine}
           rows={this.props.rows}
-          value="JOHN B. ABOLARIN "
         />
         <MdClose style={iconStyle} />
       </div>

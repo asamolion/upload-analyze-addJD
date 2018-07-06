@@ -51,7 +51,7 @@ class Indicator extends Component {
           style={this.props.completed ? iconStyle : inactiveIconStyle}
           className="material-icons"
         >
-         done 
+          done
         </i>
         <span style={labelStyle}>{this.props.label}</span>
         <i style={dottedIcon} />

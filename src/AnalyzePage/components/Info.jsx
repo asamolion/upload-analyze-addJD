@@ -110,7 +110,7 @@ class Info extends Component {
             />
           </div>
           <div style={colStyle} className="col-md-4">
-            <label style={labelStyle}>Current Location</label>
+            <label style={labelStyle}>Current Status</label>
             <Dropdown
               onRef={ref => (this.CurrentStatus = ref)}
               startValue={formData.Status}

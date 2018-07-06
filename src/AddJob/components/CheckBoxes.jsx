@@ -6,13 +6,38 @@ import InputField from "./InputField";
 import Dropdown from "./Dropdown";
 import Checkbox from "material-ui/Checkbox";
 
+const checkboxContainerStyle = {
+  display: "inline-block",
+  border: "1px solid #72C4CC",
+  borderRadius: "35px",
+  margin: "10px",
+  paddingRight: "20px"
+};
+
 const checkBoxStyles = {
+  display: "inline-block",
   margin: "5px 10px",
-  height: "48px"
+  width: "auto"
 };
 
 const checkboxLableStyles = {
-  color: grey500
+  whiteSpace: "nowrap",
+  color: "#72C4CC",
+  top: "4px"
+};
+
+const iconStyle = {
+  color: "#287784",
+  fontSize: "30px"
+};
+
+const closeIconStyle = {
+  color: "#72C4CC",
+  cursor: "pointer",
+  display: "inline-block",
+  fontSize: "18px",
+  position: "relative",
+  left: "10px"
 };
 
 const colStyle = {
@@ -20,126 +45,106 @@ const colStyle = {
   paddingLeft: "0"
 };
 
- 
-
-
-
+const toggleStyle = {
+  color: "#72C4CC",
+  cursor: "pointer",
+  margin: "10px 0 10px 30px"
+};
 
 class CheckBoxes extends Component {
-
   constructor(props) {
-      super(props);
-      this.state = {
-        formData: {
-         
-          Comissions: false,
-          OvertimePay: false,
-          Bonuses: false,
-          TravelMealHousingAllowance: false,
-          HealthBenefits: false,
-          Wellness: false,
-
-        }
+    super(props);
+    this.state = {
+      formData: {
+        Comissions: false,
+        OvertimePay: false,
+        Bonuses: false,
+        TravelMealHousingAllowance: false,
+        HealthBenefits: false,
+        Wellness: false
       }
+    };
 
-      this.handleChange = this.handleChange.bind(this);
-      this.returnInfo = this.returnInfo.bind(this);
-    }
+    this.handleChange = this.handleChange.bind(this);
+    this.returnInfo = this.returnInfo.bind(this);
+  }
 
-    componentDidMount(){
+  componentDidMount() {
     this.props.onRef(this);
   }
-  handleChange(event){
-    const {formData} = this.state;
+  handleChange(event) {
+    const { formData } = this.state;
 
     console.log("checking checkbox", event.target.name, event.target.value);
 
     formData[event.target.name] = !formData[event.target.name];
 
-    this.setState({formData});
+    this.setState({ formData });
   }
 
-  returnInfo(){
+  returnInfo() {
     return this.state.formData;
   }
- 
+
   render() {
     return (
       <div>
         <div className="row">
-       
-
-           <div className="col-md-4">
-             <Checkbox
-              name="OvertimePay"
-              onCheck={this.handleChange}
-              label="Overtime"
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-          <div className="col-md-4">
-            <Checkbox
-              label="Commissions"
-               name="Commissions"
-              onCheck={this.handleChange}
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-           <div className="col-md-4">
-            <Checkbox
-              label="Bonuses"
-              name="Bonuses"
-              onCheck={this.handleChange}
-
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-          
-          
+          {[
+            {
+              name: "OvertimePay",
+              label: "Overtime"
+            },
+            {
+              name: "Commisions",
+              label: "Commissions"
+            },
+            {
+              name: "Bonuses",
+              label: "Bonuses"
+            },
+            {
+              name: "HealthBenefits",
+              label: "Health"
+            },
+            {
+              name: "Wellness",
+              label: "Wellness"
+            },
+            {
+              name: "TravelMealHousingAllowance",
+              label: "Travel / Meal / Housing Allowance"
+            }
+          ].map(current => (
+            <div style={checkboxContainerStyle}>
+              <Checkbox
+                checkedIcon={
+                  <i style={iconStyle} className="material-icons">
+                    done
+                  </i>
+                }
+                uncheckedIcon={<i className="material-icons" />}
+                name={current.name}
+                onCheck={this.handleChange}
+                label={current.label}
+                style={checkBoxStyles}
+                inputStyle={{
+                  height: "25px"
+                }}
+                labelStyle={checkboxLableStyles}
+              />
+              <i style={closeIconStyle} className="material-icons">
+                close
+              </i>
+            </div>
+          ))}
         </div>
         <div className="row">
-       
-          <div className="col-md-4">
-            <Checkbox
-              label="Health"
-              name="HealthBenefits"
-              onCheck={this.handleChange}
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-          <div className="col-md-4">
-            <Checkbox
-              label="Wellness"
-              name="Wellness"
-              onCheck={this.handleChange}
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-          
-          <div className="col-md-4">
-            <Checkbox
-              name="TravelMealHousingAllowance"
-              onCheck={this.handleChange}
-              label="Travel / Meal / Housing Allowance"
-              style={checkBoxStyles}
-              labelStyle={checkboxLableStyles}
-            />
-          </div>
-          
-          
+          <p style={toggleStyle} onClick={this.toggleInputShow}>
+            + Add Compensation
+          </p>
         </div>
-      
-       
-       
-
-        
-        </div>
-     
+      </div>
     );
   }
 }

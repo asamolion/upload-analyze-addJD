@@ -46,6 +46,16 @@ const styles = {
     borderStyle: "solid",
     borderColor: "white",
     borderWidth: "2px"
+  },
+  roundedButton: {
+    margin: "0 auto",
+    minWidth: "150px",
+    position: "relative",
+    left: "-20px",
+    borderRadius: "25px"
+  },
+  roundedButtonOverlay: {
+    borderRadius: "25px"
   }
 };
 
@@ -260,11 +270,13 @@ class AnalyzePage extends React.Component {
                   </div>
 
                   <RaisedButton
+                    className="rounded-button"
                     onClick={this.getInfo}
                     label="Submit"
                     type="submit"
                     Rounded={true}
-                    style={{ borderRadius: "5px" }}
+                    style={styles.roundedButton}
+                    overlayStyle={styles.roundedButtonOverlay}
                     primary={true}
                   />
                 </div>
